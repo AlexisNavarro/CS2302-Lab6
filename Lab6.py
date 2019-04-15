@@ -15,6 +15,8 @@ Purpose:The purpose of this lab is to be able to work with disjoint set forests 
 import matplotlib.pyplot as plt
 import numpy as np
 import random
+import datetime # need to use datetime instead of time because when using time, I would always get 0 for my running time
+                # datetime is more precise for this lab.
 
 
 
@@ -78,7 +80,17 @@ def remove(S,maze_walls,numSets):
             union(S,w[0],w[1])# combines the walls after the deletion
             numSets-=1
     return w
-            
+
+
+def removeC(S,maze_walls,numSets):
+    while numSets > 1:
+        w = random.choice(maze_walls)# w gets the wall that was randomly selected
+        i=maze_walls.index(w)#gets the position where we chose the wall to delete
+        if find(S,w[0]) != find(S,w[1]):
+            maze_walls.pop(i) #deletes the wall
+            union_by_Size(S,w[0],w[1])# combines the walls after the deletion
+            numSets-=1
+    return w
 #------------------------------------------------------------------------------
 #METHOD TO DRAW THE MAZE (PROVIDED BY THE CS2302)
 def draw_maze(walls,maze_rows,maze_cols,cell_nums=False):
@@ -126,8 +138,15 @@ plt.close("all")
 #MAIN
 
 #size of rows and columns (Dimensions of the maze)
+#Various sizes to test
 maze_rows = 10
 maze_cols = 15
+
+#maze_rows = 20
+#maze_cols = 25
+
+#maze_rows = 40
+#maze_cols = 45
 
 
 maze_walls = wall_list(maze_rows,maze_cols)#Gets the list of walls in the maze
@@ -142,7 +161,21 @@ S = DisjointSetForest(maze_rows*maze_cols)# makes the new DSF by combining the r
 numSets=setAmount(S) # gets the amount of sets in the maze
 
 
-remove(S,maze_walls,numSets)# calls the method to remove parts of the wall
+#This part will give the running time for the remove function that uses standard Union (Only one can be uncommented at a time, if not the program will crash)
+start_Time=datetime.datetime.now()
+remove(S,maze_walls,numSets)# calls the method to remove parts of the wall with regular union
+end_Time=datetime.datetime.now()
+print('Running time remove: ',(end_Time-start_Time))
+
+
+#Uncomment this in order to get the running time with the remove function that uses path compression (Only one can be uncommented at a time, if not the program will crash)
+'''
+start_Time2=datetime.datetime.now()
+removeC(S,maze_walls,numSets)
+end_Time2=datetime.datetime.now()
+print('Running time removeC: ',(end_Time2-start_Time2))
+'''
+
 
 
 draw_maze(maze_walls,maze_rows,maze_cols)#draws the walls after the deletion of random maze walls
