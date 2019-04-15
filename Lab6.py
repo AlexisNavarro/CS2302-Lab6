@@ -15,9 +15,9 @@ Purpose:The purpose of this lab is to be able to work with disjoint set forests 
 import matplotlib.pyplot as plt
 import numpy as np
 import random
-import datetime # need to use datetime instead of time because when using time, I would always get 0 for my running time
-                # datetime is more precise for this lab.
-
+#import datetime # need to use datetime instead of time because when using time, I would always get 0 for my running time when the size of my maze was too small
+                # datetime is more precise for smaller mazes when being tested
+import time
 
 
 #GIVEN FUNCTIONS (PROVIDED BY CS 2302)
@@ -139,11 +139,11 @@ plt.close("all")
 
 #size of rows and columns (Dimensions of the maze)
 #Various sizes to test
-maze_rows = 10
-maze_cols = 15
+#maze_rows = 10     use datetime for these dimensions since they are smaller
+#maze_cols = 15
 
-#maze_rows = 20
-#maze_cols = 25
+maze_rows = 20 # for bigger maze dimensions use time import
+maze_cols = 25
 
 #maze_rows = 40
 #maze_cols = 45
@@ -162,17 +162,17 @@ numSets=setAmount(S) # gets the amount of sets in the maze
 
 
 #This part will give the running time for the remove function that uses standard Union (Only one can be uncommented at a time, if not the program will crash)
-start_Time=datetime.datetime.now()
+start_Time=time.time()
 remove(S,maze_walls,numSets)# calls the method to remove parts of the wall with regular union
-end_Time=datetime.datetime.now()
+end_Time=time.time()
 print('Running time remove: ',(end_Time-start_Time))
 
 
 #Uncomment this in order to get the running time with the remove function that uses path compression (Only one can be uncommented at a time, if not the program will crash)
 '''
-start_Time2=datetime.datetime.now()
+start_Time2=time.time()
 removeC(S,maze_walls,numSets)
-end_Time2=datetime.datetime.now()
+end_Time2=time.time()
 print('Running time removeC: ',(end_Time2-start_Time2))
 '''
 
